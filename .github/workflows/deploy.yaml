@@ -1,4 +1,4 @@
-name: CI-CD Build Pipeline
+name: Local CI-CD Build Pipeline
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
 
 jobs:
   build-and-push:
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted]
 
     steps:
     - name: Checkout Code from Repository
@@ -22,18 +22,11 @@ jobs:
         context: .
         push: true
         tags: xun0321/my-first-app:latest
-    - name: Set up Helm Core
-      uses: azure/setup-helm@v4
-      with:
-        version: 'v3.14.0'
     - name: Deploy Replicas to Local Cluster from Cloud
       run: |
         echo "${{ secrets.KUBECONFIG_DATA }}" > kubeconfig.yaml
         export KUBECONFIG=kubeconfig.yaml
-        helm upgrade --install cloud-release ./my-devops-app --set replicaCount=3
-        echo "=== PORT FORWARD ==="
-        kubectl port-forward deployment/helm-webserver-deployment 8082:80 &
-        sleep 10
-        echo "==== INSPECTING THE LIVE CLOUD WEBPAGE LAYOUT ==="
-        curl -s http://localhost:8082
-        echo "=================================================" 
+        echo "=== UPGRADING ==="
+        helm upgrade --install cloud-release ./my-devops-app --set replicaCount=3 --set imagePullPolicy=Always
+        echo "=== ROLLOUT ==="
+        kubectl rollout restart deployment/helm-webserver-deployment
