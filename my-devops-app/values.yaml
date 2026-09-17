@@ -1,0 +1,4 @@
+appLabel: custom-cloud-app
+replicaCount: 3
+imageName: xun0321/my-first-app:latest
+webPort: 80

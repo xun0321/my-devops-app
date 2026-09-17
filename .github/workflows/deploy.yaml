@@ -30,7 +30,7 @@ jobs:
       run:
         echo "${{ secrets.KUBECONFIG_DATA }}" > kubeconfig.yaml
         export KUBECONFIG=kubeconfig.yaml
-        helm upgrade --install cloud-release /home/xundev/my-devops-app --set replicaCount=3
+        helm upgrade --install cloud-release ./my-devops-app --set replicaCount=3
         echo "=== PORT FORWARD ==="
         kubectl port-forward deployment/helm-webserver-deployment 8082:80 &
         sleep 10
