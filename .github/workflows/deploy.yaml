@@ -27,7 +27,7 @@ jobs:
       with:
         version: 'v3.14.0'
     - name: Deploy Replicas to Local Cluster from Cloud
-      run:
+      run: |
         echo "${{ secrets.KUBECONFIG_DATA }}" > kubeconfig.yaml
         export KUBECONFIG=kubeconfig.yaml
         helm upgrade --install cloud-release ./my-devops-app --set replicaCount=3
