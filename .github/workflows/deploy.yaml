@@ -28,5 +28,3 @@ jobs:
         export KUBECONFIG=kubeconfig.yaml
         echo "=== UPGRADING ==="
         helm upgrade --install cloud-release ./my-devops-app --set replicaCount=3 --set imagePullPolicy=Always
-        echo "=== ROLLOUT ==="
-        kubectl rollout restart deployment/helm-webserver-deployment
