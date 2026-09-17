@@ -31,4 +31,9 @@ jobs:
         echo "${{ secrets.KUBECONFIG_DATA }}" > kubeconfig.yaml
         export KUBECONFIG=kubeconfig.yaml
         helm upgrade --install cloud-release /home/xundev/my-devops-app --set replicaCount=3
-        kubectl rollout restart deployment/helm-webserver-deployment
+        echo "=== PORT FORWARD ==="
+        kubectl port-forward deployment/helm-webserver-deployment 8082:80 &
+        sleep 10
+        echo "==== INSPECTING THE LIVE CLOUD WEBPAGE LAYOUT ==="
+        curl -s http://localhost:8082
+        echo "=================================================" 
